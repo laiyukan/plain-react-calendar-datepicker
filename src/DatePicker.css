@@ -1,0 +1,23 @@
+.date-picker-wrapper {
+  position: relative;
+  text-align: left;
+}
+
+dialog {
+  padding: 0;
+  border: 2px solid transparent;
+
+  .calendar-wrapper {
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px;
+  }
+}
+
+input {
+  max-width: 20rem;
+  padding: 0.25rem 0.75rem;
+  background-color: transparent;
+  border-radius: 2px;
+  border: 1px solid #dfe0df;
+  box-shadow: none;
+}

@@ -4,6 +4,7 @@
   display: grid;
   grid-gap: 1rem;
   border-radius: 2px;
+  text-align: center;
 }
 
 .header-wrapper {
@@ -56,7 +57,7 @@
 
 .sm-grid-container {
   display: grid;
-  grid-gap: 0.5rem;
+  grid-gap: 0.5em;
 
   div.row {
     display: inline-grid;

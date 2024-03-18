@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Calendar.css";
 
 enum ViewType {
@@ -7,7 +7,7 @@ enum ViewType {
   Year,
 }
 
-type date = {
+export type date = {
   year: number;
   month: number;
   day: number;
@@ -20,11 +20,15 @@ type meta = {
   month: number;
 };
 
-const THIS_YEAR = +new Date().getFullYear();
-const THIS_MONTH = +new Date().getMonth() + 1;
-const TODAY_DATE = +new Date().getDate();
+export const THIS_YEAR = +new Date().getFullYear();
+export const THIS_MONTH = +new Date().getMonth() + 1;
+export const TODAY_DATE = +new Date().getDate();
 const THIS_DECADE = Math.floor(THIS_YEAR / 10) * 10;
-const TODAY: date = { year: THIS_YEAR, month: THIS_MONTH, day: TODAY_DATE };
+export const TODAY: date = {
+  year: THIS_YEAR,
+  month: THIS_MONTH,
+  day: TODAY_DATE,
+};
 const WEEK_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = [
   "Jan",
@@ -94,7 +98,7 @@ interface YearGridProps {
 }
 
 interface CalendarProps {
-  onSelect?: () => date;
+  onPick: (selectedDate: date) => void;
 }
 
 function CalendarHeader(props: CalendarHeaderProps) {
@@ -114,11 +118,13 @@ function CalendarHeader(props: CalendarHeaderProps) {
 
   return (
     <div className="header-wrapper">
-      <div onClick={props.onLeftArrowClick}>
+      <div tabIndex={0} onClick={props.onLeftArrowClick}>
         <div className="arrow-left"></div>
       </div>
-      <div onClick={props.onHeadingClick}>{heading}</div>
-      <div onClick={props.onRightArrowClick}>
+      <div tabIndex={0} onClick={props.onHeadingClick}>
+        {heading}
+      </div>
+      <div tabIndex={0} onClick={props.onRightArrowClick}>
         <div className="arrow-right"></div>
       </div>
     </div>
@@ -201,6 +207,7 @@ function DayGrid(props: DayGridProps) {
           {row.map((col, colIndex) => (
             <div
               key={`${rowIndex}-${colIndex}`}
+              tabIndex={0}
               className={col.class}
               onClick={() => props.onDayClick(col.year, col.month, col.day)}
             >
@@ -225,6 +232,7 @@ function MonthGrid(props: MonthGridProps) {
           {row.map((month, colIndex) => (
             <div
               key={month}
+              tabIndex={0}
               className={
                 props.selectedDate.month === 4 * rowIndex + colIndex + 1
                   ? "selected"
@@ -265,6 +273,7 @@ function YearGrid(props: YearGridProps) {
             {row.map((year) => (
               <div
                 key={year}
+                tabIndex={0}
                 className={checkClass(year)}
                 onClick={() => props.onYearClick(year)}
               >
@@ -286,14 +295,18 @@ export default function Calendar(props: CalendarProps) {
     month: THIS_MONTH,
   });
 
+  useEffect(() => {
+    props.onPick(selectedDate);
+  }, [selectedDate]);
+
   function handleHeaderClick() {
     switch (calendarMeta.view) {
       case ViewType.Day:
       default:
-        setCalendarMeta((prev) => ({ ...prev, view: ViewType.Month }));
+        setCalendarMeta((cm) => ({ ...cm, view: ViewType.Month }));
         break;
       case ViewType.Month:
-        setCalendarMeta((prev) => ({ ...prev, view: ViewType.Year }));
+        setCalendarMeta((cm) => ({ ...cm, view: ViewType.Year }));
         break;
     }
   }
@@ -303,35 +316,35 @@ export default function Calendar(props: CalendarProps) {
       case ViewType.Day:
       default:
         if ((calendarMeta.year - 1) % 10 === 0 && calendarMeta.month === 1) {
-          setCalendarMeta((prev) => ({
-            ...prev,
-            decade: prev.year - 1,
-            year: prev.year - 1,
+          setCalendarMeta((cm) => ({
+            ...cm,
+            decade: cm.year - 1,
+            year: cm.year - 1,
             month: 12,
           }));
         } else if (calendarMeta.month === 1) {
-          setCalendarMeta((prev) => ({
-            ...prev,
-            year: prev.year - 1,
+          setCalendarMeta((cm) => ({
+            ...cm,
+            year: cm.year - 1,
             month: 12,
           }));
         } else {
-          setCalendarMeta((prev) => ({ ...prev, month: prev.month - 1 }));
+          setCalendarMeta((cm) => ({ ...cm, month: cm.month - 1 }));
         }
         break;
       case ViewType.Month:
         if ((calendarMeta.year - 1) % 10 === 0) {
-          setCalendarMeta((prev) => ({
-            ...prev,
-            decade: prev.year - 1,
-            year: prev.year - 1,
+          setCalendarMeta((cm) => ({
+            ...cm,
+            decade: cm.year - 1,
+            year: cm.year - 1,
           }));
         } else {
-          setCalendarMeta((prev) => ({ ...prev, year: prev.year - 1 }));
+          setCalendarMeta((cm) => ({ ...cm, year: cm.year - 1 }));
         }
         break;
       case ViewType.Year:
-        setCalendarMeta((prev) => ({ ...prev, decade: prev.decade - 10 }));
+        setCalendarMeta((cm) => ({ ...cm, decade: cm.decade - 10 }));
         break;
     }
   }
@@ -341,74 +354,63 @@ export default function Calendar(props: CalendarProps) {
       case ViewType.Day:
       default:
         if ((calendarMeta.year + 1) % 10 === 0 && calendarMeta.month === 12) {
-          setCalendarMeta((prev) => ({
-            ...prev,
-            decade: prev.year + 1,
-            year: prev.year + 1,
+          setCalendarMeta((cm) => ({
+            ...cm,
+            decade: cm.year + 1,
+            year: cm.year + 1,
             month: 1,
           }));
         } else if (calendarMeta.month === 12) {
-          setCalendarMeta((prev) => ({
-            ...prev,
-            year: prev.year + 1,
+          setCalendarMeta((cm) => ({
+            ...cm,
+            year: cm.year + 1,
             month: 1,
           }));
         } else {
-          setCalendarMeta((prev) => ({ ...prev, month: prev.month + 1 }));
+          setCalendarMeta((cm) => ({ ...cm, month: cm.month + 1 }));
         }
         break;
       case ViewType.Month:
         if ((calendarMeta.year + 1) % 10 === 0) {
-          setCalendarMeta((prev) => ({
-            ...prev,
-            decade: prev.year + 1,
-            year: prev.year + 1,
+          setCalendarMeta((cm) => ({
+            ...cm,
+            decade: cm.year + 1,
+            year: cm.year + 1,
           }));
         } else {
-          setCalendarMeta((prev) => ({ ...prev, year: prev.year + 1 }));
+          setCalendarMeta((cm) => ({ ...cm, year: cm.year + 1 }));
         }
         break;
       case ViewType.Year:
-        setCalendarMeta((prev) => ({ ...prev, decade: prev.decade + 10 }));
+        setCalendarMeta((cm) => ({ ...cm, decade: cm.decade + 10 }));
         break;
     }
   }
 
   function handleDaySelect(year: number, month: number, day: number) {
     const decade = Math.floor(year / 10) * 10;
-    if (
-      year === selectedDate.year &&
-      month === selectedDate.month &&
-      day === selectedDate.day
-    ) {
-      setCalendarMeta((prev) => ({ ...prev, decade, year, month }));
-      return;
-    }
-
-    setSelectedDate((prev) => ({ ...prev, year, month, day }));
-    setCalendarMeta((prev) => ({ ...prev, decade, year, month }));
-
-    if (props.onSelect) return selectedDate;
+    setSelectedDate((sd) => ({ ...sd, year, month, day }));
+    setCalendarMeta((cm) => ({ ...cm, decade, year, month }));
   }
 
   function handleMonthSelect(month: number) {
     if (month === selectedDate.month) {
-      setCalendarMeta((prev) => ({ ...prev, view: ViewType.Day }));
+      setCalendarMeta((cm) => ({ ...cm, view: ViewType.Day }));
       return;
     }
-    setSelectedDate((prev) => ({ ...prev, year: calendarMeta.year, month }));
-    setCalendarMeta((prev) => ({ ...prev, view: ViewType.Day, month }));
+    setSelectedDate((sd) => ({ ...sd, year: calendarMeta.year, month }));
+    setCalendarMeta((cm) => ({ ...cm, view: ViewType.Day, month }));
   }
 
   function handleYearSelect(year: number) {
     if (year === selectedDate.year) {
-      setCalendarMeta((prev) => ({ ...prev, view: ViewType.Month }));
+      setCalendarMeta((cm) => ({ ...cm, view: ViewType.Month }));
       return;
     }
     const decade = Math.floor(year / 10) * 10;
-    setSelectedDate((prev) => ({ ...prev, year }));
-    setCalendarMeta((prev) => ({
-      ...prev,
+    setSelectedDate((sd) => ({ ...sd, year }));
+    setCalendarMeta((cm) => ({
+      ...cm,
       view: ViewType.Month,
       decade,
       year,
