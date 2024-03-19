@@ -4,7 +4,7 @@ This exercise involves creating a React Calendar and Date Picker component after
 
 > Please note that this project is not intended to be developed into a full-fledged library, as there are already production-ready date pickers available for installation :)
 
-![example screenshot](/screenshots/example.png)
+![example screenshot](screenshots/example.png)
 
 ### Tools
 
@@ -35,8 +35,8 @@ This exercise involves creating a React Calendar and Date Picker component after
 - Selected date is highlighted with a circle.
 - Today's date is shown in color.
 
-![day view screenshot 1](/screenshots/day_view_1.png)
-![day view screenshot 2](/screenshots/day_view_2.png)
+![day view screenshot 1](screenshots/day_view_1.png)
+![day view screenshot 2](screenshots/day_view_2.png)
 
 #### Month View
 
@@ -45,7 +45,7 @@ This exercise involves creating a React Calendar and Date Picker component after
 - Navigate between **years** using ⏴ and ⏵ buttons.
 - Selected month is highlighted with a circle.
 
-![month view sceenshot](/screenshots/month_view.png)
+![month view sceenshot](screenshots/month_view.png)
 
 #### Year View
 
@@ -54,11 +54,11 @@ This exercise involves creating a React Calendar and Date Picker component after
 - Navigate between **decades** using ⏴ and ⏵ buttons.
 - Selected year is highlighted with a circle.
 
-![year view screenshot](/screenshots/year_view.png)
+![year view screenshot](screenshots/year_view.png)
 
 ## Date Picker Features
 
 - Clicking the `input` field opens the calendar dropdown dialog.
 - The dialog closes upon selecting a date in Day View or when losing focus.
 
-![date picker screenshot](/screenshots/date_picker.png)
+![date picker screenshot](screenshots/date_picker.png)
