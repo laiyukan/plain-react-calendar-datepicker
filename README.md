@@ -1,30 +1,64 @@
-# React + TypeScript + Vite
+# Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This exercise involves creating a React Calendar and Date Picker component after three years of exclusively working with Angular.
 
-Currently, two official plugins are available:
+> Please note that this project is not intended to be developed into a full-fledged library, as there are already production-ready date pickers available for installation :)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![example screenshot](/screenshots/example.png)
 
-## Expanding the ESLint configuration
+### Tools
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React + TypeScript + Vite
+- Pure CSS (Grid Layout)
+- Dialog HTML Element
+- ESLint
 
-- Configure the top-level `parserOptions` property like this:
+### Browser Support
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- Chrome 122
+- Edge 122
+- Safari 17.4
+- Firefox 123
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Calendar Features
+
+#### API properties of the Calendar component
+
+| Name       | Type             | Default                                  | Description                               |
+| ---------- | ---------------- | ---------------------------------------- | ----------------------------------------- |
+| `onSelect` | function(object) | { THIS_YEAR, THIS_MONTH, DATE_OF_TODAY } | Called when the selected date is changed. |
+
+#### Day View
+
+- Grayed-out days represent dates outside the current month.
+- Navigate between **months** using ⏴ and ⏵ buttons.
+- Selected date is highlighted with a circle.
+- Today's date is shown in color.
+
+![day view screenshot 1](/screenshots/day_view_1.png)
+![day view screenshot 2](/screenshots/day_view_2.png)
+
+#### Month View
+
+- Clicking the heading switches to Month View from Day View.
+- Clicking a month returns to Day View.
+- Navigate between **years** using ⏴ and ⏵ buttons.
+- Selected month is highlighted with a circle.
+
+![month view sceenshot](/screenshots/month_view.png)
+
+#### Year View
+
+- Clicking the heading switches to Year View from Month View.
+- Clicking a year returns to Month View.
+- Navigate between **decades** using ⏴ and ⏵ buttons.
+- Selected year is highlighted with a circle.
+
+![year view screenshot](/screenshots/year_view.png)
+
+## Date Picker Features
+
+- Clicking the `input` field opens the calendar dropdown dialog.
+- The dialog closes upon selecting a date in Day View or when losing focus.
+
+![date picker screenshot](/screenshots/date_picker.png)
