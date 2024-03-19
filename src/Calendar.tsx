@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Calendar.css";
 
 enum ViewType {
@@ -98,7 +98,8 @@ interface YearGridProps {
 }
 
 interface CalendarProps {
-  onPick: (selectedDate: date) => void;
+  onPick?: (selectedDate: date) => void; // only called when a date is selected in "Day view" for Date Picker
+  onSelect?: (selectedDate: date) => void; // called every time the selected date changed for Calendar
 }
 
 function CalendarHeader(props: CalendarHeaderProps) {
@@ -294,9 +295,14 @@ export default function Calendar(props: CalendarProps) {
     year: THIS_YEAR,
     month: THIS_MONTH,
   });
+  const dayPickedFlagRef = useRef(false);
 
   useEffect(() => {
-    props.onPick(selectedDate);
+    props.onSelect && props.onSelect(selectedDate);
+    if (dayPickedFlagRef.current && props.onPick) {
+      props.onPick(selectedDate);
+      dayPickedFlagRef.current = false;
+    }
   }, [selectedDate]);
 
   function handleHeaderClick() {
@@ -389,8 +395,19 @@ export default function Calendar(props: CalendarProps) {
 
   function handleDaySelect(year: number, month: number, day: number) {
     const decade = Math.floor(year / 10) * 10;
+    if (
+      year === selectedDate.year &&
+      month === selectedDate.month &&
+      day === selectedDate.day
+    ) {
+      setCalendarMeta((prev) => ({ ...prev, decade, year, month }));
+      dayPickedFlagRef.current = true;
+      return;
+    }
+
     setSelectedDate((sd) => ({ ...sd, year, month, day }));
     setCalendarMeta((cm) => ({ ...cm, decade, year, month }));
+    dayPickedFlagRef.current = true;
   }
 
   function handleMonthSelect(month: number) {
@@ -425,26 +442,26 @@ export default function Calendar(props: CalendarProps) {
         onLeftArrowClick={handleLeftArrowClick}
         onRightArrowClick={handleRightArrowClick}
       ></CalendarHeader>
-      {calendarMeta.view === ViewType.Day ? (
+      {calendarMeta.view === ViewType.Day && (
         <DayGrid
           selectedDate={selectedDate}
           calendarMeta={calendarMeta}
           onDayClick={handleDaySelect}
         ></DayGrid>
-      ) : null}
-      {calendarMeta.view === ViewType.Month ? (
+      )}
+      {calendarMeta.view === ViewType.Month && (
         <MonthGrid
           selectedDate={selectedDate}
           onMonthClick={handleMonthSelect}
         ></MonthGrid>
-      ) : null}
-      {calendarMeta.view === ViewType.Year ? (
+      )}
+      {calendarMeta.view === ViewType.Year && (
         <YearGrid
           selectedDate={selectedDate}
           calendarMeta={calendarMeta}
           onYearClick={handleYearSelect}
         ></YearGrid>
-      ) : null}
+      )}
     </div>
   );
 }

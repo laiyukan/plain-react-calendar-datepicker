@@ -20,7 +20,7 @@ function App() {
       <div className="example-page">
         <div className="page-row">
           <div>
-            <Calendar onPick={handleCalendarDateSelect} />
+            <Calendar onSelect={handleCalendarDateSelect} />
             <p>Result: {JSON.stringify(calendarDate)}</p>
           </div>
           <div>
