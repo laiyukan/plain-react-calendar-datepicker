@@ -6,6 +6,8 @@ This exercise involves creating a React Calendar and Date Picker component after
 
 ![example screenshot](https://raw.githubusercontent.com/laiyukan/plain-react-calendar-datepicker/master/public/screenshots/example.png)
 
+[**DEMO**](https://laiyukan.github.io/plain-react-calendar-datepicker/)
+
 ### Tools
 
 - React + TypeScript + Vite
